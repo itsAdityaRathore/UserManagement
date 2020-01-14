@@ -6,11 +6,16 @@ import com.usermngmt.UserManagement.Model.UserNode;
 import com.usermngmt.UserManagement.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -54,5 +59,64 @@ public class UserService {
         }
         Gson g = new Gson();
         return g.toJson(root);
+    }
+
+    public String bulkcreate() {
+        userRepository.saveAll(Arrays.asList(
+                new User("Aditya", "Salim@gmail.com", "Udaipur", "9090909090", "AM", ""),
+                new User("Mohan", "Mohan@yahoo.in", "Ajmer", "9090901234", "SM", "1001"),
+                new User("Amit", "Amit@gmail.com", "Kolkata", "9093456090", "SM", "1001"),
+                new User("Rahul", "Rahul@outlook.com", "Raipur", "9879609090", "LP", "1002"),
+                new User("Salim", "Salim@gmail.com", "Bikaner", "8841909090", "AM", ""),
+                new User("Parul", "Parul@yahoo.in", "Chennai", "7896909090", "SM", "1005"),
+                new User("Gaurav", "Gaurav@gmail.com", "Himachal", "9980789090", "LP", "1006"),
+                new User("Avish", "Avish@outlook.com", "Goa", "8890656090", "LP", "1006")
+                )
+        );
+        return "Bulk Creation Completed";
+    }
+
+    public String create(User user) {
+        // save a single Customer
+        userRepository.save(new User(user.getUname(), user.getUemail(), user.getUaddress(), user.getUphone(), user.getUrole(), user.getUmanager()));
+        return "Customer is created";
+    }
+
+    public List<User> findAll() {
+        List<com.usermngmt.UserManagement.Model.User> users = userRepository.findAll();
+        return users;
+//        List<UserUI> userUI = new ArrayList<>();
+//        for (User user : users) {
+//            userUI.add(new UserUI(user.getUname(),user.getUemail(),user.getUaddress(),user.getUphone(),user.getUrole(),user.getUmanager()));
+//        }
+//        return userUI;
+    }
+
+    public Optional<User> search(long id) {
+        Optional<User> user = userRepository.findById(id);
+        return user;
+    }
+
+    public List<User> deleteUser(Long id) {
+        userRepository.deleteById(id);
+        List<User> user = userRepository.findAll();
+        return user;
+    }
+
+    public List<User> searchByName(String umanager) {
+        List<User> user = userRepository.findByUmanager(umanager);
+        return user;
+    }
+
+    public List<User> findByUroleAndUmanager(String urole, String umanager) {
+        List<User> user = userRepository.findByUroleAndUmanager(urole, umanager);
+        System.out.println(user);
+        return user;
+    }
+
+    public List<User> findByUrole(User user) {
+        Query query = entityManager.createQuery("select u from User u where u.urole = ?1");
+        query.setParameter(1, user.getUrole());
+        return query.getResultList();
     }
 }
