@@ -15,4 +15,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     List<User> findByUroleAndUmanager(String urole, String umanager);
 
+    List<User> findByUrole(User user);
+
 }

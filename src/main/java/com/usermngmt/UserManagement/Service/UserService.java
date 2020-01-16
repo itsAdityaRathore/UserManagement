@@ -76,14 +76,14 @@ public class UserService {
         return "Bulk Creation Completed";
     }
 
-    public String create(User user) {
+    public String createUser(User user) {
         // save a single Customer
         userRepository.save(new User(user.getUname(), user.getUemail(), user.getUaddress(), user.getUphone(), user.getUrole(), user.getUmanager()));
-        return "Customer is created";
+        return "User is created";
     }
 
-    public List<User> findAll() {
-        List<com.usermngmt.UserManagement.Model.User> users = userRepository.findAll();
+    public List<User> findAllUsers() {
+        List<User> users = userRepository.findAll();
         return users;
 //        List<UserUI> userUI = new ArrayList<>();
 //        for (User user : users) {
@@ -92,29 +92,29 @@ public class UserService {
 //        return userUI;
     }
 
-    public Optional<User> search(long id) {
+    public Optional<User> searchUserById(long id) {
         Optional<User> user = userRepository.findById(id);
         return user;
     }
 
-    public List<User> deleteUser(Long id) {
+    public String deleteUser(Long id) {
         userRepository.deleteById(id);
-        List<User> user = userRepository.findAll();
-        return user;
+        //List<User> user = userRepository.findAll();
+        return "User with id : ${id} deleted successfully";
     }
 
-    public List<User> searchByName(String umanager) {
+    public List<User> searchByManager(String umanager) {
         List<User> user = userRepository.findByUmanager(umanager);
         return user;
     }
 
-    public List<User> findByUroleAndUmanager(String urole, String umanager) {
+    public List<User> searchByUroleAndUmanager(String urole, String umanager) {
         List<User> user = userRepository.findByUroleAndUmanager(urole, umanager);
         System.out.println(user);
         return user;
     }
 
-    public List<User> findByUrole(User user) {
+    public List<User> searchByUrole(User user) {
         Query query = entityManager.createQuery("select u from User u where u.urole = ?1");
         query.setParameter(1, user.getUrole());
         return query.getResultList();

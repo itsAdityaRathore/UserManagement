@@ -39,44 +39,44 @@ public class UserController {
 
     // Create a Single User
     @RequestMapping(value = "/user", method = RequestMethod.POST)
-    public String create(@RequestBody User user) {
-        return userService.create(user);
+    public String createUser(@RequestBody User user) {
+        return userService.createUser(user);
     }
 
     // Find all the users using in-built method
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     public List<User> findAll() {
-        return userService.findAll();
+        return userService.findAllUsers();
     }
 
     // Search user by Id
     @RequestMapping(value = "/users/{id}", method = RequestMethod.GET)
     public Optional<User> search(@PathVariable long id) {
-        return userService.search(id);
+        return userService.searchUserById(id);
     }
 
     // Delete a user by Id
     @RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE)
-    public List<User> deleteUser(@PathVariable Long id) {
+    public String deleteUser(@PathVariable Long id) {
         return userService.deleteUser(id);
     }
 
     // Find user by its manager
     @RequestMapping(value = "user/{umanager}", method = RequestMethod.GET)
-    public List<User> searchByName(@PathVariable String umanager) {
-        return userService.searchByName(umanager);
+    public List<User> searchByManager(@PathVariable String umanager) {
+        return userService.searchByManager(umanager);
     }
 
     // Find user by its role and manager
     @RequestMapping(value = "user/", method = RequestMethod.GET)
-    public List<User> findByUroleAndUmanager(@RequestParam("urole") String urole, @RequestParam("umanager") String umanager) {
-        return userService.findByUroleAndUmanager(urole, umanager);
+    public List<User> searchByUroleAndUmanager(@RequestParam("urole") String urole, @RequestParam("umanager") String umanager) {
+        return userService.searchByUroleAndUmanager(urole, umanager);
     }
 
     // Find user by passing Role in the body(JSON) with custom query
     @RequestMapping(value = "/users/body")
-    public List<User> findByUrole(@RequestBody User user) {
-        return userService.findByUrole(user);
+    public List<User> searchByUrole(@RequestBody User user) {
+        return userService.searchByUrole(user);
     }
 
     // Returns the hierarchy of the USERS in Json format

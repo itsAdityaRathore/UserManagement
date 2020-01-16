@@ -30,7 +30,7 @@ public class User {
     public User() {
     }
 
-    public User(String s) {
+    public User(String urole) {
     }
 
 
